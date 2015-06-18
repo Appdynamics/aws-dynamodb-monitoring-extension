@@ -1,0 +1,35 @@
+accounts:
+  - awsAccessKey: "Nw5XVvMq+xpUGs1kGS9MP3Vv3IUUCaMH9ZE90zvJ9vE="
+    awsSecretKey: "3W+gxGX8xP/F72fu2UJDKSl2tanWH7F8/Lv8VD3ap6vkVJlIPOuOtyp6rfTgxHpC"
+    displayAccountName: "TestAccount"
+    regions: ["us-east-1", "us-west-1", "us-west-2"]
+
+credentialsDecryptionConfig:
+    enableDecryption: "true"
+    decryptionKey: "test"
+    
+proxyConfig:
+    host:
+    port:
+    username:
+    password:
+    
+metricsConfig:
+    metricTypes:
+      - metricName: ""
+        statType: ""
+
+    excludeMetrics: [ ]
+
+    metricsTimeRange:
+      startTimeInMinsBeforeNow: 5
+      endTimeInMinsBeforeNow: 0
+
+    maxErrorRetrySize: 0
+
+concurrencyConfig:
+  noOfAccountThreads: 3
+  noOfRegionThreadsPerAccount: 3
+  noOfMetricThreadsPerRegion: 3
+
+metricPrefix: "Custom Metrics|Amazon DynamoDB|"
