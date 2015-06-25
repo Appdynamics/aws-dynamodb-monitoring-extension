@@ -1,6 +1,6 @@
 accounts:
-  - awsAccessKey: "Nw5XVvMq+xpUGs1kGS9MP3Vv3IUUCaMH9ZE90zvJ9vE="
-    awsSecretKey: "3W+gxGX8xP/F72fu2UJDKSl2tanWH7F8/Lv8VD3ap6vkVJlIPOuOtyp6rfTgxHpC"
+  - awsAccessKey: ""
+    awsSecretKey: ""
     displayAccountName: "TestAccount"
     regions: ["us-east-1", "us-west-1", "us-west-2"]
 
