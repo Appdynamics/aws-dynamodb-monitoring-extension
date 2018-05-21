@@ -8,15 +8,13 @@
 
 package com.appdynamics.extensions.aws.dynamodb;
 
-import static org.junit.Assert.assertTrue;
+import com.google.common.collect.Maps;
+import com.singularity.ee.agent.systemagent.api.TaskOutput;
+import org.junit.Test;
 
 import java.util.Map;
 
-import org.junit.Test;
-
-import com.appdynamics.extensions.aws.dynamodb.DynamoDBMonitor;
-import com.google.common.collect.Maps;
-import com.singularity.ee.agent.systemagent.api.TaskOutput;
+import static org.junit.Assert.assertTrue;
 
 public class DynamoDBMonitorITest {
 	

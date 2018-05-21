@@ -8,15 +8,13 @@
 
 package com.appdynamics.extensions.aws.dynamodb;
 
-import static com.appdynamics.extensions.aws.Constants.METRIC_PATH_SEPARATOR;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-
 import com.appdynamics.extensions.aws.SingleNamespaceCloudwatchMonitor;
 import com.appdynamics.extensions.aws.collectors.NamespaceMetricStatisticsCollector;
 import com.appdynamics.extensions.aws.config.Configuration;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessor;
+import org.apache.log4j.Logger;
+
+import static com.appdynamics.extensions.aws.Constants.METRIC_PATH_SEPARATOR;
 
 /**
  * @author Florencio Sarmiento
@@ -24,7 +22,7 @@ import com.appdynamics.extensions.aws.metric.processors.MetricsProcessor;
  */
 public class DynamoDBMonitor extends SingleNamespaceCloudwatchMonitor<Configuration> {
 	
-	private static final Logger LOGGER = Logger.getLogger("com.singularity.extensions.aws.DynamoDBMonitor");
+	private static final Logger LOGGER = Logger.getLogger(DynamoDBMonitor.class);
 
 	private static final String DEFAULT_METRIC_PREFIX = String.format("%s%s%s%s", 
 			"Custom Metrics", METRIC_PATH_SEPARATOR, "Amazon DynamoDB", METRIC_PATH_SEPARATOR);
@@ -33,6 +31,18 @@ public class DynamoDBMonitor extends SingleNamespaceCloudwatchMonitor<Configurat
 		super(Configuration.class);
 		LOGGER.info(String.format("Using AWS DynamoDB Monitor Version [%s]", 
 				this.getClass().getPackage().getImplementationTitle()));
+	}
+
+	protected String getDefaultMetricPrefix() {
+		return DEFAULT_METRIC_PREFIX;
+	}
+
+	public String getMonitorName() {
+		return "DynamoDBMonitor";
+	}
+
+	protected int getTaskCount() {
+		return 3;
 	}
 
 	@Override
@@ -44,8 +54,9 @@ public class DynamoDBMonitor extends SingleNamespaceCloudwatchMonitor<Configurat
 				.Builder(config.getAccounts(),
 						config.getConcurrencyConfig(), 
 						config.getMetricsConfig(),
-						metricsProcessor)
-				.withCredentialsEncryptionConfig(config.getCredentialsDecryptionConfig())
+						metricsProcessor,
+						config.getMetricPrefix())
+				.withCredentialsDecryptionConfig(config.getCredentialsDecryptionConfig())
 				.withProxyConfig(config.getProxyConfig())
 				.build();
 	}
@@ -54,17 +65,11 @@ public class DynamoDBMonitor extends SingleNamespaceCloudwatchMonitor<Configurat
 	protected Logger getLogger() {
 		return LOGGER;
 	}
-	
-	@Override
-	protected String getMetricPrefix(Configuration config) {
-		return StringUtils.isNotBlank(config.getMetricPrefix()) ? 
-				config.getMetricPrefix() : DEFAULT_METRIC_PREFIX;
-	}
+
 
 	private MetricsProcessor createMetricsProcessor(Configuration config) {
 		return new DynamoDBMetricsProcessor(
-				config.getMetricsConfig().getMetricTypes(), 
-				config.getMetricsConfig().getExcludeMetrics());
+				config.getMetricsConfig().getIncludeMetrics());
 	}
 
 }

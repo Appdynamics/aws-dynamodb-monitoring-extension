@@ -8,52 +8,50 @@
 
 package com.appdynamics.extensions.aws.dynamodb;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
-
 import com.amazonaws.services.cloudwatch.AmazonCloudWatch;
-import com.amazonaws.services.cloudwatch.model.Metric;
-import com.appdynamics.extensions.aws.config.MetricType;
+import com.appdynamics.extensions.aws.config.IncludeMetric;
+import com.appdynamics.extensions.aws.dto.AWSMetric;
 import com.appdynamics.extensions.aws.metric.NamespaceMetricStatistics;
 import com.appdynamics.extensions.aws.metric.StatisticType;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessor;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessorHelper;
+import org.apache.log4j.Logger;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.LongAdder;
 
 /**
  * @author Florencio Sarmiento
  *
  */
 public class DynamoDBMetricsProcessor implements MetricsProcessor {
+
+	private static final Logger LOGGER = Logger.getLogger(DynamoDBMetricsProcessor.class);
 	
 	private static final String NAMESPACE = "AWS/DynamoDB";
 	
 	private static final String[] DIMENSIONS = {"TableName"};
 	
-	private List<MetricType> metricTypes;
+	private List<IncludeMetric> includeMetrics;
 	
-	private Pattern excludeMetricsPattern;
-	
-	public DynamoDBMetricsProcessor(List<MetricType> metricTypes,
-			Set<String> excludeMetrics) {
-		this.metricTypes = metricTypes;
-		this.excludeMetricsPattern = MetricsProcessorHelper.createPattern(excludeMetrics);
+	public DynamoDBMetricsProcessor(List<IncludeMetric> includeMetrics) {
+		this.includeMetrics = includeMetrics;
 	}
 
-	public List<Metric> getMetrics(AmazonCloudWatch awsCloudWatch, String accountName) {
-		return MetricsProcessorHelper.getFilteredMetrics(awsCloudWatch, 
+	public List<AWSMetric> getMetrics(AmazonCloudWatch awsCloudWatch, String accountName, LongAdder awsRequestsCounter) {
+		return MetricsProcessorHelper.getFilteredMetrics(awsCloudWatch, awsRequestsCounter,
 				NAMESPACE, 
-				excludeMetricsPattern, 
+				includeMetrics,
 				DIMENSIONS);
 	}
 	
-	public StatisticType getStatisticType(Metric metric) {
-		return MetricsProcessorHelper.getStatisticType(metric, metricTypes);
+	public StatisticType getStatisticType(AWSMetric metric) {
+		return MetricsProcessorHelper.getStatisticType(metric.getIncludeMetric(), includeMetrics);
 	}
-	
-	public Map<String, Double> createMetricStatsMapForUpload(NamespaceMetricStatistics namespaceMetricStats) {
+
+	public List<com.appdynamics.extensions.metrics.Metric> createMetricStatsMapForUpload(NamespaceMetricStatistics namespaceMetricStats) {
 		Map<String, String> dimensionToMetricPathNameDictionary = new HashMap<String, String>();
 		dimensionToMetricPathNameDictionary.put(DIMENSIONS[0], "Table Name");
 		

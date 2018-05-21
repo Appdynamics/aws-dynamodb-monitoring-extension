@@ -7,7 +7,7 @@
   -->
 
 <monitor>
-    <name>AWS DynamoDB Monitor</name>
+    <name>DynamoDBMonitor</name>
     <type>managed</type>
     <description>AWS DynamoDB Monitoring Extension</description>
     <monitor-configuration></monitor-configuration>
@@ -19,16 +19,12 @@
         <description>AWS DynamoDB Monitor Run task</description>
         <type>java</type>
         <execution-timeout-in-secs>60</execution-timeout-in-secs>
-        
 		<task-arguments>
-			<argument name="config-file" is-required="true" default-value="monitors/AWSDynamoDBMonitor/conf/config.yaml" />
-			<argument name="region-endpoints-config" is-required="true" default-value="monitors/AWSDynamoDBMonitor/conf/region-endpoints.yaml" />
+			<argument name="config-file" is-required="true" default-value="monitors/AWSDynamoDBMonitor/config.yml"/>
 		</task-arguments>
-            
         <java-task>
             <classpath>aws-dynamodb-monitoring-extension.jar</classpath>
             <impl-class>com.appdynamics.extensions.aws.dynamodb.DynamoDBMonitor</impl-class>
         </java-task>
-        
     </monitor-run-task>
 </monitor>
