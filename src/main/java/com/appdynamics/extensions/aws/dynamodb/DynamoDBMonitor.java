@@ -10,7 +10,7 @@ package com.appdynamics.extensions.aws.dynamodb;
 
 import com.appdynamics.extensions.aws.SingleNamespaceCloudwatchMonitor;
 import com.appdynamics.extensions.aws.collectors.NamespaceMetricStatisticsCollector;
-import com.appdynamics.extensions.aws.config.Configuration;
+import com.appdynamics.extensions.aws.dynamodb.config.DynamoDBConfiguration;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessor;
 import org.apache.log4j.Logger;
 
@@ -20,7 +20,7 @@ import static com.appdynamics.extensions.aws.Constants.METRIC_PATH_SEPARATOR;
  * @author Florencio Sarmiento
  *
  */
-public class DynamoDBMonitor extends SingleNamespaceCloudwatchMonitor<Configuration> {
+public class DynamoDBMonitor extends SingleNamespaceCloudwatchMonitor<DynamoDBConfiguration> {
 	
 	private static final Logger LOGGER = Logger.getLogger(DynamoDBMonitor.class);
 
@@ -28,9 +28,7 @@ public class DynamoDBMonitor extends SingleNamespaceCloudwatchMonitor<Configurat
 			"Custom Metrics", METRIC_PATH_SEPARATOR, "Amazon DynamoDB", METRIC_PATH_SEPARATOR);
 	
 	public DynamoDBMonitor() {
-		super(Configuration.class);
-		LOGGER.info(String.format("Using AWS DynamoDB Monitor Version [%s]", 
-				this.getClass().getPackage().getImplementationTitle()));
+		super(DynamoDBConfiguration.class);
 	}
 
 	protected String getDefaultMetricPrefix() {
@@ -47,7 +45,7 @@ public class DynamoDBMonitor extends SingleNamespaceCloudwatchMonitor<Configurat
 
 	@Override
 	protected NamespaceMetricStatisticsCollector getNamespaceMetricsCollector(
-			Configuration config) {
+			DynamoDBConfiguration config) {
 		MetricsProcessor metricsProcessor = createMetricsProcessor(config);
 
 		return new NamespaceMetricStatisticsCollector
@@ -67,9 +65,9 @@ public class DynamoDBMonitor extends SingleNamespaceCloudwatchMonitor<Configurat
 	}
 
 
-	private MetricsProcessor createMetricsProcessor(Configuration config) {
+	private MetricsProcessor createMetricsProcessor(DynamoDBConfiguration config) {
 		return new DynamoDBMetricsProcessor(
-				config.getMetricsConfig().getIncludeMetrics());
+				config.getMetricsConfig().getIncludeMetrics(), config.getIncludeTableNames());
 	}
 
 }

@@ -26,6 +26,9 @@ proxyConfig:
     username:
     password:
 
+#Filters metrics based on TableName provided. Accepts regex patterns
+includeTableNames: []
+
 
 #Allowed values are Basic and Detailed. Refer https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-cloudwatch-new.html for more information
 # Basic will fire CloudWatch API calls every 5 minutes
