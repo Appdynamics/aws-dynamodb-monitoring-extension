@@ -23,18 +23,18 @@ public class DynamoDBMonitorITest {
 	@Test
 	public void testMetricsCollectionCredentialsEncrypted() throws Exception {
 		Map<String, String> args = Maps.newHashMap();
-		args.put("config-file","src/test/resources/conf/itest-encrypted-config.yaml");
+		args.put("config-file","src/test/resources/conf/itest-encrypted-config.yml");
 		
 		TaskOutput result = classUnderTest.execute(args, null);
-		assertTrue(result.getStatusMessage().contains("successfully completed"));
+		assertTrue(result.getStatusMessage().contains("Monitor {} completes"));
 	}
 	
 	@Test
 	public void testMetricsCollectionWithProxy() throws Exception {
 		Map<String, String> args = Maps.newHashMap();
-		args.put("config-file","src/test/resources/conf/itest-proxy-config.yaml");
+		args.put("config-file","src/test/resources/conf/itest-proxy-config.yml");
 		
 		TaskOutput result = classUnderTest.execute(args, null);
-		assertTrue(result.getStatusMessage().contains("successfully completed"));
+		assertTrue(result.getStatusMessage().contains("Monitor {} completes"));
 	}	
 }
