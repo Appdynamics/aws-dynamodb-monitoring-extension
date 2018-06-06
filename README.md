@@ -5,8 +5,8 @@ Captures DynamoDB statistics from Amazon CloudWatch and displays them in the App
 
 ## Prerequisites
 1. Please give the following permissions to the account being used to with the extension.
-cloudwatch:ListMetrics
-cloudwatch:GetMetricStatistics
+**cloudwatch:ListMetrics**
+**cloudwatch:GetMetricStatistics**
 
 2. In order to use this extension, you do need a [Standalone JAVA Machine Agent](https://docs.appdynamics.com/display/PRO44/Standalone+Machine+Agents) or [SIM Agent](https://docs.appdynamics.com/display/PRO44/Server+Visibility).  For more details on downloading these products, please  visit [here](https://download.appdynamics.com/).
 
@@ -14,22 +14,22 @@ cloudwatch:GetMetricStatistics
 
 ## Installation
 
-1. Run 'mvn clean install' from aws-dynamodb-monitoring-extension
-2. Copy and unzip AWSDynamoDBMonitor-\<version\>.zip from 'target' directory into \<machine_agent_dir\>/monitors/
+1. Run `mvn clean install` from aws-dynamodb-monitoring-extension directory
+2. Copy and unzip `AWSDynamoDBMonitor-\<version\>.zip` from `target` directory into `<machine_agent_dir>/monitors/`
 3. Edit config.yml file in AWSDynamoDBMonitor and provide the required configuration (see Configuration section)
 4. Restart the Machine Agent.
 
-Please place the extension in the "monitors" directory of your Machine Agent installation directory. Do not place the extension in the "extensions" directory of your Machine Agent installation directory.
+Please place the extension in the `monitors` directory of your Machine Agent installation directory. Do not place the extension in the `extensions` directory of your Machine Agent installation directory.
 
 ## Configuration
 In order to use the extension, you need to update the config.yml file that is present in the extension folder. The following is an explanation of the configurable fields that are present in the config.yml file.
-1. If SIM is enabled, then use the following metricPrefix metricPrefix: "Custom Metrics|AWS DynamoDB" Else, configure the "COMPONENT_ID" under which the metrics need to be reported. This can be done by changing the value of <COMPONENT_ID> in metricPrefix: "Server|Component:<COMPONENT_ID>|Custom Metrics|AWS DynamoDB|".
+1. If SIM is enabled, then use the following metricPrefix `metricPrefix: "Custom Metrics|AWS DynamoDB"` else configure the "COMPONENT_ID" under which the metrics need to be reported. This can be done by changing the value of <COMPONENT_ID> in `metricPrefix: "Server|Component:<COMPONENT_ID>|Custom Metrics|AWS DynamoDB|"`.
 
- For example,
- ```
- metricPrefix: "Server|Component:100|Custom Metrics|AWS DynamoDB|"
- ```
-2. Provide accessKey(required) and secretKey(required) of AWS account(s), also provide displayAccountName(any name that represents your account) and regions(required). If you are running this extension inside an EC2 instance which has IAM profile configured then you awsAccessKey and awsSecretKey can be kept blank, extension will use IAM profile to authenticate.
+   For example,
+     ```
+     metricPrefix: "Server|Component:100|Custom Metrics|AWS DynamoDB|"
+     ```
+2. Provide accessKey(required) and secretKey(required) of AWS account(s), also provide displayAccountName(any name that represents your account) and regions(required). If you are running this extension inside an EC2 instance which has IAM profile configured then you awsAccessKey and awsSecretKey can be kept empty, extension will use IAM profile to authenticate.
    ```
    accounts:
      - awsAccessKey: "XXXXXXXX1"
@@ -50,37 +50,38 @@ In order to use the extension, you need to update the config.yml file that is pr
        enableDecryption: "true"
        encryptionKey: "XXXXXXXX"
    ```
-4. To report metrics from specific tables, configure `includeTableNames` which accepts comma separated values and regex patterns. If ".*", all are monitored and if empty, none are monitored.
+4. To report metrics from specific tables, configure `includeTableNames` which accepts comma separated values and regex patterns. If `.*` is used, all are monitored and if empty, none are monitored.
    ```
    includeTableNames: ["blog-*", "demodb"]
    ```
 5. Configure the metrics section.
-   
-        For configuring the metrics, the following properties can be used:
-   
-        |     Property      |   Default value |         Possible values         |                                              Description                                                                                                |
-        | :---------------- | :-------------- | :------------------------------ | :------------------------------------------------------------------------------------------------------------- |
-        | alias             | metric name     | Any string                      | The substitute name to be used in the metric browser instead of metric name.                                   |
-        | statType          | "ave"           | "AVERAGE", "SUM", "MIN", "MAX"  | AWS configured values as returned by API                                                                       |
-        | aggregationType   | "AVERAGE"       | "AVERAGE", "SUM", "OBSERVATION" | [Aggregation qualifier](https://docs.appdynamics.com/display/PRO44/Build+a+Monitoring+Extension+Using+Java)    |
-        | timeRollUpType    | "AVERAGE"       | "AVERAGE", "SUM", "CURRENT"     | [Time roll-up qualifier](https://docs.appdynamics.com/display/PRO44/Build+a+Monitoring+Extension+Using+Java)   |
-        | clusterRollUpType | "INDIVIDUAL"    | "INDIVIDUAL", "COLLECTIVE"      | [Cluster roll-up qualifier](https://docs.appdynamics.com/display/PRO44/Build+a+Monitoring+Extension+Using+Java)|
-        | multiplier        | 1               | Any number                      | Value with which the metric needs to be multiplied.                                                            |
-        | convert           | null            | Any key value map               | Set of key value pairs that indicates the value to which the metrics need to be transformed. eg: UP:0, DOWN:1  |
-        | delta             | false           | true, false                     | If enabled, gives the delta values of metrics instead of actual values.                                        |
-   
-        For example,
-        ```
-        - name: "ConditionalCheckFailedRequests"
-          alias: "ConditionalCheckFailedRequests"
-          statType: "ave"
-          delta: false
-          multiplier: 1
-          aggregationType: "AVERAGE"
-          timeRollUpType: "AVERAGE"
-          clusterRollUpType: "INDIVIDUAL"
-        ```
-        **All these metric properties are optional, and the default value shown in the table is applied to the metric(if a property has not been specified) by default.**
+
+     For configuring the metrics, the following properties can be used:
+
+     |     Property      |   Default value |         Possible values         |                                              Description                                                                                                |
+     | :---------------- | :-------------- | :------------------------------ | :------------------------------------------------------------------------------------------------------------- |
+     | alias             | metric name     | Any string                      | The substitute name to be used in the metric browser instead of metric name.                                   |
+     | statType          | "ave"           | "AVERAGE", "SUM", "MIN", "MAX"  | AWS configured values as returned by API                                                                       |
+     | aggregationType   | "AVERAGE"       | "AVERAGE", "SUM", "OBSERVATION" | [Aggregation qualifier](https://docs.appdynamics.com/display/PRO44/Build+a+Monitoring+Extension+Using+Java)    |
+     | timeRollUpType    | "AVERAGE"       | "AVERAGE", "SUM", "CURRENT"     | [Time roll-up qualifier](https://docs.appdynamics.com/display/PRO44/Build+a+Monitoring+Extension+Using+Java)   |
+     | clusterRollUpType | "INDIVIDUAL"    | "INDIVIDUAL", "COLLECTIVE"      | [Cluster roll-up qualifier](https://docs.appdynamics.com/display/PRO44/Build+a+Monitoring+Extension+Using+Java)|
+     | multiplier        | 1               | Any number                      | Value with which the metric needs to be multiplied.                                                            |
+     | convert           | null            | Any key value map               | Set of key value pairs that indicates the value to which the metrics need to be transformed. eg: UP:0, DOWN:1  |
+     | delta             | false           | true, false                     | If enabled, gives the delta values of metrics instead of actual values.                                        |
+
+    For example,
+    ```
+    - name: "ConditionalCheckFailedRequests"
+      alias: "ConditionalCheckFailedRequests"
+      statType: "ave"
+      delta: false
+      multiplier: 1
+      aggregationType: "AVERAGE"
+      timeRollUpType: "AVERAGE"
+      clusterRollUpType: "INDIVIDUAL"
+    ```
+    
+    **All these metric properties are optional, and the default value shown in the table is applied to the metric(if a property has not been specified) by default.**
 
 ### config.yml
 
@@ -181,4 +182,5 @@ Always feel free to fork and contribute any changes directly here on [GitHub](ht
    |Extension Version         |2.0.0       |
    |Controller Compatibility  |4.4 or Later|
    |Last Update               |6th June, 2018 |
+
 List of changes to this extension can be found [here](https://github.com/Appdynamics/aws-dynamodb-monitoring-extension/blob/master/CHANGELOG.md)
