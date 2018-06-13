@@ -15,7 +15,7 @@ Captures DynamoDB statistics from Amazon CloudWatch and displays them in the App
 ## Installation
 
 1. Run `mvn clean install` from aws-dynamodb-monitoring-extension directory
-2. Copy and unzip `AWSDynamoDBMonitor-\<version\>.zip` from `target` directory into `<machine_agent_dir>/monitors/`
+2. Copy and unzip `AWSDynamoDBMonitor-<version>.zip` from `target` directory into `<machine_agent_dir>/monitors/`
 3. Edit config.yml file in AWSDynamoDBMonitor and provide the required configuration (see Configuration section)
 4. Restart the Machine Agent.
 
