@@ -29,7 +29,7 @@ In order to use the extension, you need to update the config.yml file that is pr
      ```
      metricPrefix: "Server|Component:100|Custom Metrics|AWS DynamoDB|"
      ```
-2. Provide accessKey(required) and secretKey(required) of AWS account(s), also provide displayAccountName(any name that represents your account) and regions(required). If you are running this extension inside an EC2 instance which has IAM profile configured then you awsAccessKey and awsSecretKey can be kept empty, extension will use IAM profile to authenticate.
+2. Provide accessKey(required) and secretKey(required) of AWS account(s), also provide displayAccountName(any name that represents your account) and regions(required). If you are running this extension inside an EC2 instance which has IAM profile configured then awsAccessKey and awsSecretKey can be kept empty, extension will use IAM profile to authenticate.
    ```
    accounts:
      - awsAccessKey: "XXXXXXXX1"

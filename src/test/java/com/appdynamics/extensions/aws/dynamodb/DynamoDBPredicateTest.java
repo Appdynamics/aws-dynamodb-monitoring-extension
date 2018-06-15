@@ -55,7 +55,7 @@ public class DynamoDBPredicateTest {
 
     @Test
     public void testIncludeTableNamesMatchingShouldReturnTrue() {
-        List<String> includeTableNames = Lists.newArrayList("Dashboards");
+        List<String> includeTableNames = Lists.newArrayList("^Dashboards$");
         DynamoDBPredicate classUnderTest = new DynamoDBPredicate(includeTableNames);
         when(metric.getDimensions()).thenReturn(Lists.newArrayList(dimension));
         when(dimension.getValue()).thenReturn("Dashboards");
@@ -64,7 +64,7 @@ public class DynamoDBPredicateTest {
 
     @Test
     public void testIncludeTableNamesContainsShouldReturnTrue() {
-        List<String> includeTableNames = Lists.newArrayList("Dash");
+        List<String> includeTableNames = Lists.newArrayList("Dash.*");
         DynamoDBPredicate classUnderTest = new DynamoDBPredicate(includeTableNames);
         when(metric.getDimensions()).thenReturn(Lists.newArrayList(dimension));
         when(dimension.getValue()).thenReturn("Dashboards");
@@ -73,7 +73,7 @@ public class DynamoDBPredicateTest {
 
     @Test
     public void testIncludeTableNamesMatching1ShouldReturnTrue() {
-        List<String> includeTableNames = Lists.newArrayList("Dashboards", "test");
+        List<String> includeTableNames = Lists.newArrayList("Dashboards", "test", "");
         DynamoDBPredicate classUnderTest = new DynamoDBPredicate(includeTableNames);
         when(metric.getDimensions()).thenReturn(Lists.newArrayList(dimension));
         when(dimension.getValue()).thenReturn("Dashboards");
