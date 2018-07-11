@@ -50,9 +50,12 @@ In order to use the extension, you need to update the config.yml file that is pr
        enableDecryption: "true"
        encryptionKey: "XXXXXXXX"
    ```
-4. To report metrics from specific tables, configure `includeTableNames` which accepts comma separated values and regex patterns. If `.*` is used, all are monitored and if empty, none are monitored.
+4. To report metrics from specific tables, configure `dimensions` with dimension name "TableName" and values as comma separated table names. The values accept comma separated strings and regex patterns. Dimensions supported in AWSDynamoDB are listed [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/dynamo-metricscollected.html)
    ```
-   includeTableNames: ["blog-*", "demodb"]
+   dimensions:
+     - name: "TableName"
+       displayName: "TableName"
+       values: ["Dashboards", "test"]
    ```
 5. Configure the metrics section.
 
@@ -114,7 +117,11 @@ proxyConfig:
     username:
     password:   
     
-includeTableNames: []
+#Filters based on dimensions, values accepts comma separated values.
+dimensions:
+  - name: "TableName"
+    displayName: "TableName"
+    values: ["Dashboards", "test"]
 
 cloudWatchMonitoring: "Basic"
 
@@ -179,7 +186,7 @@ Always feel free to fork and contribute any changes directly here on [GitHub](ht
 ## Version
    |          Name            |  Version   |
    |--------------------------|------------|
-   |Extension Version         |2.0.0       |
+   |Extension Version         |2.0.1       |
    |Controller Compatibility  |4.4 or Later|
    |Last Update               |13th June, 2018 |
 

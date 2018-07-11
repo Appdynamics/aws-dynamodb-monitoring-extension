@@ -24,8 +24,11 @@ proxyConfig:
     username:
     password:
 
-#Filters metrics based on TableName provided. Accepts comma separated values and regex patterns. If `.*` is used, all are monitored and if empty, none are monitored
-includeTableNames: []
+#Filters based on dimensions, values accepts comma separated values.
+dimensions:
+  - name: "TableName"
+    displayName: "TableName"
+    values: ["Dashboards", "test"]
 
 
 #Allowed values are Basic and Detailed. Refer https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-cloudwatch-new.html for more information

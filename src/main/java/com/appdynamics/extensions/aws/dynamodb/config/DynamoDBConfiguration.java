@@ -13,13 +13,4 @@ import java.util.List;
 
 public class DynamoDBConfiguration extends Configuration {
 
-    private List<String> includeTableNames;
-
-    public List<String> getIncludeTableNames() {
-        return includeTableNames;
-    }
-
-    public void setIncludeTableNames(List<String> includeTableNames) {
-        this.includeTableNames = includeTableNames;
-    }
 }

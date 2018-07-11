@@ -66,7 +66,7 @@ public class DynamoDBMonitor extends SingleNamespaceCloudwatchMonitor<DynamoDBCo
 
 	private MetricsProcessor createMetricsProcessor(DynamoDBConfiguration config) {
 		return new DynamoDBMetricsProcessor(
-				config.getMetricsConfig().getIncludeMetrics(), config.getIncludeTableNames());
+				config.getMetricsConfig().getIncludeMetrics(), config.getDimensions());
 	}
 
 }

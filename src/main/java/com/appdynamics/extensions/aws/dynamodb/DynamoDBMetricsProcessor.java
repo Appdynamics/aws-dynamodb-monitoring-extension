@@ -9,12 +9,14 @@ package com.appdynamics.extensions.aws.dynamodb;
 
 import com.amazonaws.services.cloudwatch.AmazonCloudWatch;
 import com.amazonaws.services.cloudwatch.model.DimensionFilter;
+import com.appdynamics.extensions.aws.config.Dimension;
 import com.appdynamics.extensions.aws.config.IncludeMetric;
 import com.appdynamics.extensions.aws.dto.AWSMetric;
 import com.appdynamics.extensions.aws.metric.NamespaceMetricStatistics;
 import com.appdynamics.extensions.aws.metric.StatisticType;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessor;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessorHelper;
+import com.appdynamics.extensions.aws.predicate.MultiDimensionPredicate;
 import com.google.common.collect.Lists;
 import org.apache.log4j.Logger;
 
@@ -33,20 +35,18 @@ public class DynamoDBMetricsProcessor implements MetricsProcessor {
 	
 	private static final String NAMESPACE = "AWS/DynamoDB";
 	
-	private static final String DIMENSIONS = "TableName";
-	
 	private List<IncludeMetric> includeMetrics;
-	private List<String> includeTableNames;
+	private List<Dimension> dimensions;
 	
-	public DynamoDBMetricsProcessor(List<IncludeMetric> includeMetrics, List<String> includeTableNames) {
+	public DynamoDBMetricsProcessor(List<IncludeMetric> includeMetrics, List<Dimension> dimensions) {
 		this.includeMetrics = includeMetrics;
-		this.includeTableNames = includeTableNames;
+		this.dimensions = dimensions;
 	}
 
 	public List<AWSMetric> getMetrics(AmazonCloudWatch awsCloudWatch, String accountName, LongAdder awsRequestsCounter) {
 		List<DimensionFilter> dimensionFilters = getDimensionFilters();
 
-		DynamoDBPredicate dynamoDBPredicate = new DynamoDBPredicate(includeTableNames);
+		MultiDimensionPredicate dynamoDBPredicate = new MultiDimensionPredicate(dimensions);
 
 		return MetricsProcessorHelper.getFilteredMetrics(awsCloudWatch, awsRequestsCounter,
 				NAMESPACE, 
@@ -56,9 +56,11 @@ public class DynamoDBMetricsProcessor implements MetricsProcessor {
 
 	private List<DimensionFilter> getDimensionFilters() {
 		List<DimensionFilter> dimensionFilters = Lists.newArrayList();
-		DimensionFilter dbDimensionFilter = new DimensionFilter();
-		dbDimensionFilter.withName(DIMENSIONS);
-		dimensionFilters.add(dbDimensionFilter);
+		for (Dimension dimension : dimensions) {
+			DimensionFilter dbDimensionFilter = new DimensionFilter();
+			dbDimensionFilter.withName(dimension.getName());
+			dimensionFilters.add(dbDimensionFilter);
+		}
 		return dimensionFilters;
 	}
 
@@ -68,8 +70,9 @@ public class DynamoDBMetricsProcessor implements MetricsProcessor {
 
 	public List<com.appdynamics.extensions.metrics.Metric> createMetricStatsMapForUpload(NamespaceMetricStatistics namespaceMetricStats) {
 		Map<String, String> dimensionToMetricPathNameDictionary = new HashMap<String, String>();
-		dimensionToMetricPathNameDictionary.put(DIMENSIONS, "TableName");
-		
+		for (Dimension dimension : dimensions) {
+			dimensionToMetricPathNameDictionary.put(dimension.getName(), dimension.getDisplayName());
+		}
 		return MetricsProcessorHelper.createMetricStatsMapForUpload(namespaceMetricStats, 
 				dimensionToMetricPathNameDictionary, false);
 	}
