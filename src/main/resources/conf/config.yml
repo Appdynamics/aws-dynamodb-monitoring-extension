@@ -24,7 +24,7 @@ proxyConfig:
     username:
     password:
 
-#Filters based on dimensions, values accepts comma separated values.
+#Filters based on dimensions, values accepts comma separated values and regex patterns. If `.*` is used, all are monitored and if empty, none are monitored
 dimensions:
   - name: "TableName"
     displayName: "TableName"

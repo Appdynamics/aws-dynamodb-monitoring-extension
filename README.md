@@ -50,13 +50,27 @@ In order to use the extension, you need to update the config.yml file that is pr
        enableDecryption: "true"
        encryptionKey: "XXXXXXXX"
    ```
-4. To report metrics from specific tables, configure `dimensions` with dimension name "TableName" and values as comma separated table names. The values accept comma separated strings and regex patterns. Dimensions supported in AWSDynamoDB are listed [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/dynamo-metricscollected.html)
+4. To filter metrics from specific dimensions, configure `dimensions` with dimension name and its values. The values accept comma separated strings and regex patterns. Dimensions supported in AWSDynamoDB are listed [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/dynamo-metricscollected.html).
+   
+   The example below fetches metrics specific to TableName dimension from tables Dashboards and test. The metric path for ProvisionedWriteCapacityUnits metric from Dashboards table in AppDynamics Metric browser looks like `Custom Metrics|Amazon DynamoDB|<Account>|<Region>|Table Name|Dashboards|ProvisionedWriteCapacityUnits`
    ```
    dimensions:
      - name: "TableName"
-       displayName: "TableName"
+       displayName: "Table Name"
        values: ["Dashboards", "test"]
    ```
+   
+   The example below fetches metrics common to dimensions TableName and GlobalSecondaryIndexName and the metric path for a metric looks like `Custom Metrics|Amazon DynamoDB|<Account>|<Region>|TableName|Dashboards|Global Secondary Index Name|Index1-index|ProvisionedWriteCapacityUnits`
+   ```
+   dimensions:
+     - name: "TableName"
+       displayName: "Table Name"
+       values: ["Dashboards", "Hammer.*"]
+     - name: "GlobalSecondaryIndexName"
+       displayName: "Global Secondary Index Name"
+       values: ["Index1-index"]
+   ```
+   
 5. Configure the metrics section.
 
      For configuring the metrics, the following properties can be used:
