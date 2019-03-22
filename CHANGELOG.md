@@ -5,3 +5,4 @@
 
 ### Version 2.0.1
 * Multi-dimensional support
+* Updated the aws-cloudwatch-exts-commons to 2.0.1.1 from 2.0.0
