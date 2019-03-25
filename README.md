@@ -4,22 +4,19 @@
 Captures DynamoDB statistics from Amazon CloudWatch and displays them in the AppDynamics Metric Browser.
 
 ## Prerequisites
-1. Please give the following permissions to the account being used to with the extension.
+1. 1. Before the extension is installed, the prerequisites mentioned [here](https://community.appdynamics.com/t5/Knowledge-Base/Extensions-Prerequisites-Guide/ta-p/35213) need to be met. Please do not proceed with the extension installation if the specified prerequisites are not met.
+
+2. Please give the following permissions to the AWS Account being used to with the extension.
 **cloudwatch:ListMetrics**
 **cloudwatch:GetMetricStatistics**
-
-2. In order to use this extension, you do need a [Standalone JAVA Machine Agent](https://docs.appdynamics.com/display/PRO44/Standalone+Machine+Agents) or [SIM Agent](https://docs.appdynamics.com/display/PRO44/Server+Visibility).  For more details on downloading these products, please  visit [here](https://download.appdynamics.com/).
-
-3. The extension needs to be able to connect to AWS Cloudwatch in order to collect and send metrics. To do this, you will have to either establish a remote connection in between the extension and the product, or have an agent on the same machine running the product in order for the extension to collect and send the metrics.
 
 ## Installation
 
 1. Run `mvn clean install` from aws-dynamodb-monitoring-extension directory
-2. Copy and unzip `AWSDynamoDBMonitor-<version>.zip` from `target` directory into `<machine_agent_dir>/monitors/`
-3. Edit config.yml file in AWSDynamoDBMonitor and provide the required configuration (see Configuration section)
-4. Restart the Machine Agent.
-
-Please place the extension in the `monitors` directory of your Machine Agent installation directory. Do not place the extension in the `extensions` directory of your Machine Agent installation directory.
+2. Copy and unzip `AWSDynamoDBMonitor-<version>.zip` from `target` directory into `<MachineAgent_Home>/monitors/`. Do not place the extension in the `extensions` directory of your Machine Agent installation directory.
+3. Edit the config.yml file located at MachineAgent_Home/monitors/AWSDynamoDBMonitor and provide the required configuration (see Configuration section)
+4. The metricPrefix of the extension has to be configured as specified [here](https://community.appdynamics.com/t5/Knowledge-Base/How-do-I-troubleshoot-missing-custom-metrics-or-extensions/ta-p/28695#Configuring%20an%20Extension). Please make sure that the right metricPrefix is chosen based on your machine agent deployment, otherwise this could lead to metrics not being visible in the controller.
+5. Restart the Machine Agent.
 
 ## Configuration
 In order to use the extension, you need to update the config.yml file that is present in the extension folder. The following is an explanation of the configurable fields that are present in the config.yml file.
@@ -99,6 +96,36 @@ In order to use the extension, you need to update the config.yml file that is pr
     ```
     
     **All these metric properties are optional, and the default value shown in the table is applied to the metric(if a property has not been specified) by default.**
+    
+6. For several services AWS CloudWatch does not instantly update the metrics but it goes back in time to update that information. 
+   This delay sometimes can take upto 5 minutes. The extension runs every minute(Detailed) or every 5 minutes (Basic) and gets the latest value at that time.
+   There may be a case where the extension may miss the value before CloudWatch updates it. In order to make sure we don't do that, 
+   the extension has the ability to look for metrics during a certain interval, where we already have set it to default at 5 minutes but you can 
+   change it as per your requirements. 
+       ```
+       metricsTimeRange:
+         startTimeInMinsBeforeNow: 10
+         endTimeInMinsBeforeNow: 5
+       ```
+  
+7. This field is set as per the defaults suggested by AWS. You can change this if your limit is different.
+       ```    
+       getMetricStatisticsRateLimit: 400
+       ```
+8. The maximum number of retry attempts for failed requests that can be retried. 
+        ```
+        maxErrorRetrySize: 3
+        ```
+9. CloudWatch can be used in two formats, Basic and Detailed. You can specify how you would like to run the extension by specifying the chosen format here.
+    By default, the extension is set to Basic, which makes the extension run every 5 minutes.
+    Refer https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-cloudwatch-new.html for more information.
+    
+        ```
+        #Allowed values are Basic and Detailed. 
+        # Basic will fire CloudWatch API calls every 5 minutes
+        # Detailed will fire CloudWatch API calls every 1 minutes
+        cloudWatchMonitoring: "Basic"
+        ```
 
 ### config.yml
 
