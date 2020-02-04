@@ -13,6 +13,11 @@ import com.appdynamics.extensions.aws.dynamodb.config.DynamoDBConfiguration;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessor;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static com.appdynamics.extensions.aws.Constants.METRIC_PATH_SEPARATOR;
 
 /**
@@ -38,8 +43,9 @@ public class DynamoDBMonitor extends SingleNamespaceCloudwatchMonitor<DynamoDBCo
 		return "DynamoDBMonitor";
 	}
 
-	protected int getTaskCount() {
-		return 3;
+	@Override
+	protected List<Map<String, ?>> getServers() {
+		return new ArrayList<Map<String, ?>>();
 	}
 
 	@Override
