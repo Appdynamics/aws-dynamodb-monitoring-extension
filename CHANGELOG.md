@@ -1,3 +1,6 @@
+## Version 2.0.3
+ - Updated aws commons from 2.2.1 to 2.2.2
+
 ## Version 2.0.2
  - Updated config.yml with controllerInfo and health check sections.
  - Updated aws commons from 2.2.0 to 2.2.1

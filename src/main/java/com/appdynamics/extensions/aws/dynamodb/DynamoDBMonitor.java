@@ -11,7 +11,9 @@ import com.appdynamics.extensions.aws.SingleNamespaceCloudwatchMonitor;
 import com.appdynamics.extensions.aws.collectors.NamespaceMetricStatisticsCollector;
 import com.appdynamics.extensions.aws.dynamodb.config.DynamoDBConfiguration;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessor;
-import org.apache.log4j.Logger;
+import com.appdynamics.extensions.logging.ExtensionsLoggerFactory;
+import org.slf4j.Logger;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +28,7 @@ import static com.appdynamics.extensions.aws.Constants.METRIC_PATH_SEPARATOR;
  */
 public class DynamoDBMonitor extends SingleNamespaceCloudwatchMonitor<DynamoDBConfiguration> {
 	
-	private static final Logger LOGGER = Logger.getLogger(DynamoDBMonitor.class);
+	private static final Logger LOGGER = ExtensionsLoggerFactory.getLogger(DynamoDBMonitor.class);
 
 	private static final String DEFAULT_METRIC_PREFIX = String.format("%s%s%s%s", 
 			"Custom Metrics", METRIC_PATH_SEPARATOR, "Amazon DynamoDB", METRIC_PATH_SEPARATOR);

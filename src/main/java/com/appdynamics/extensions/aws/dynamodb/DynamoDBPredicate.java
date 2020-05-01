@@ -9,17 +9,18 @@ package com.appdynamics.extensions.aws.dynamodb;
 
 
 import com.amazonaws.services.cloudwatch.model.Metric;
+import com.appdynamics.extensions.logging.ExtensionsLoggerFactory;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.util.List;
 
 
 public class DynamoDBPredicate implements Predicate<Metric> {
 
-    private static final Logger LOGGER = Logger.getLogger(DynamoDBPredicate.class);
+    private static final Logger LOGGER = ExtensionsLoggerFactory.getLogger(DynamoDBPredicate.class);
 
     private List<String> includeTableNames;
     private Predicate<CharSequence> patternPredicate;

@@ -15,8 +15,10 @@ import com.appdynamics.extensions.aws.metric.NamespaceMetricStatistics;
 import com.appdynamics.extensions.aws.metric.StatisticType;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessor;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessorHelper;
+import com.appdynamics.extensions.logging.ExtensionsLoggerFactory;
 import com.google.common.collect.Lists;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +31,7 @@ import java.util.concurrent.atomic.LongAdder;
  */
 public class DynamoDBMetricsProcessor implements MetricsProcessor {
 
-	private static final Logger LOGGER = Logger.getLogger(DynamoDBMetricsProcessor.class);
+	private static final Logger LOGGER = ExtensionsLoggerFactory.getLogger(DynamoDBMetricsProcessor.class);
 	
 	private static final String NAMESPACE = "AWS/DynamoDB";
 	
