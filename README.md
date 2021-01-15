@@ -185,9 +185,9 @@ Always feel free to fork and contribute any changes directly here on [GitHub](ht
 ## Version
    |          Name            |  Version   |
    |--------------------------|------------|
-   |Extension Version         |2.0.3      |
+   |Extension Version         |2.0.4      |
    |Controller Compatibility  |4.4 or Later|
    |Agent Compatibility| Machine Agent 4.5.13 or later |
-   |Last Update               |Apr 29, 2020 |
+   |Last Update               |Jan 15, 2021 |
 
 List of changes to this extension can be found [here](https://github.com/Appdynamics/aws-dynamodb-monitoring-extension/blob/master/CHANGELOG.md)
