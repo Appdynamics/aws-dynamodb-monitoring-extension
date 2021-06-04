@@ -1,3 +1,6 @@
+## Version 2.0.5
+- Updated aws commons from 2.2.4 to 2.2.5
+
 ## Version 2.0.4
  - Updated aws commons from 2.2.3 to 2.2.4
 
