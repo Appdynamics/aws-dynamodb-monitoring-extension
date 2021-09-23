@@ -5,18 +5,13 @@ Captures DynamoDB statistics from Amazon CloudWatch and displays them in the App
 
 ## Prerequisites
 1. Please give the following permissions to the account being used to with the extension.
-**cloudwatch:ListMetrics**
-**cloudwatch:GetMetricStatistics**
-
-2. In order to use this extension, you do need a [Standalone JAVA Machine Agent](https://docs.appdynamics.com/display/PRO44/Standalone+Machine+Agents) or [SIM Agent](https://docs.appdynamics.com/display/PRO44/Server+Visibility).  For more details on downloading these products, please  visit [here](https://download.appdynamics.com/).
+```
+cloudwatch:ListMetrics
+cloudwatch:GetMetricStatistics
+```
+2. Before the extension is installed, the prerequisites mentioned [here](https://community.appdynamics.com/t5/Knowledge-Base/Extensions-Prerequisites-Guide/ta-p/35213) need to be met. Please do not proceed with the extension installation if the specified prerequisites are not met.
 
 3. The extension needs to be able to connect to AWS Cloudwatch in order to collect and send metrics. To do this, you will have to either establish a remote connection in between the extension and the product, or have an agent on the same machine running the product in order for the extension to collect and send the metrics.
-4.  **Agent Compatibility:**
-    * **Note** : 
-      * This extension is compatible with Machine Agent version 4.5.13 or later.
-      * If you are seeing warning messages while starting the Machine Agent, update the http-client and http-core JARs in `{MACHINE_AGENT_HOME}/monitorsLibs` to httpclient-4.5.9 and httpcore-4.4.12 to make this warning go away. 
-      * To make this extension work on Machine Agent < 4.5.13: The http-client and http-core JARs in `{MACHINE_AGENT_HOME}/monitorsLibs` has to be manually be updated to httpclient-4.5.9 and httpcore-4.4.12
-
 
 ## Installation
 
@@ -35,6 +30,9 @@ In order to use the extension, you need to update the config.yml file that is pr
      ```
      metricPrefix: "Server|Component:100|Custom Metrics|AWS DynamoDB|"
      ```
+
+More details around metric prefix can be found [here](https://community.appdynamics.com/t5/Knowledge-Base/How-do-I-troubleshoot-missing-custom-metrics-or-extensions/ta-p/28695).
+
 2. Provide accessKey(required) and secretKey(required) of AWS account(s), also provide displayAccountName(any name that represents your account) and regions(required). If you are running this extension inside an EC2 instance which has IAM profile configured then awsAccessKey and awsSecretKey can be kept empty, extension will use IAM profile to authenticate.
    ```
    accounts:
@@ -68,9 +66,9 @@ In order to use the extension, you need to update the config.yml file that is pr
      | :---------------- | :-------------- | :------------------------------ | :------------------------------------------------------------------------------------------------------------- |
      | alias             | metric name     | Any string                      | The substitute name to be used in the metric browser instead of metric name.                                   |
      | statType          | "ave"           | "AVERAGE", "SUM", "MIN", "MAX"  | AWS configured values as returned by API                                                                       |
-     | aggregationType   | "AVERAGE"       | "AVERAGE", "SUM", "OBSERVATION" | [Aggregation qualifier](https://docs.appdynamics.com/display/PRO44/Build+a+Monitoring+Extension+Using+Java)    |
-     | timeRollUpType    | "AVERAGE"       | "AVERAGE", "SUM", "CURRENT"     | [Time roll-up qualifier](https://docs.appdynamics.com/display/PRO44/Build+a+Monitoring+Extension+Using+Java)   |
-     | clusterRollUpType | "INDIVIDUAL"    | "INDIVIDUAL", "COLLECTIVE"      | [Cluster roll-up qualifier](https://docs.appdynamics.com/display/PRO44/Build+a+Monitoring+Extension+Using+Java)|
+     | aggregationType   | "AVERAGE"       | "AVERAGE", "SUM", "OBSERVATION" | [Aggregation qualifier](https://docs.appdynamics.com/display/latest/Build+a+Monitoring+Extension+Using+Java)    |
+     | timeRollUpType    | "AVERAGE"       | "AVERAGE", "SUM", "CURRENT"     | [Time roll-up qualifier](https://docs.appdynamics.com/display/latest/Build+a+Monitoring+Extension+Using+Java)   |
+     | clusterRollUpType | "INDIVIDUAL"    | "INDIVIDUAL", "COLLECTIVE"      | [Cluster roll-up qualifier](https://docs.appdynamics.com/display/latest/Build+a+Monitoring+Extension+Using+Java)|
      | multiplier        | 1               | Any number                      | Value with which the metric needs to be multiplied.                                                            |
      | convert           | null            | Any key value map               | Set of key value pairs that indicates the value to which the metrics need to be transformed. eg: UP:0, DOWN:1  |
      | delta             | false           | true, false                     | If enabled, gives the delta values of metrics instead of actual values.                                        |
@@ -91,7 +89,7 @@ In order to use the extension, you need to update the config.yml file that is pr
 
 ### config.yml
 
-Please avoid using tab (\t) when editing yaml files. Please copy all the contents of the config.yml file and go to [Yaml Validator](http://www.yamllint.com/) . On reaching the website, paste the contents and press the “Go” button on the bottom left.                                                       
+Please avoid using tab (\t) when editing yaml files. Please copy all the contents of the config.yml file and go to [Yaml Validator](https://jsonformatter.org/yaml-validator) . On reaching the website, paste the contents and press the “Validate YAML” button.                                                       
 If you get a valid output, that means your formatting is correct and you may move on to the next step.
 
 **Below is an example config for monitoring multiple accounts and regions:**
@@ -162,22 +160,7 @@ Please visit [this page](https://community.appdynamics.com/t5/Knowledge-Base/How
 Workbench is an inbuilt feature provided with each extension in order to assist you to fine tune the extension setup before you actually deploy it on the controller. Please review the following document on [How to use the Extensions WorkBench](https://community.appdynamics.com/t5/Knowledge-Base/How-to-use-the-Extensions-WorkBench/ta-p/30130)
 
 ## Troubleshooting
-Please follow the steps listed in this [troubleshooting-document](https://community.appdynamics.com/t5/Knowledge-Base/How-to-troubleshoot-missing-custom-metrics-or-extensions-metrics/ta-p/28695) in order to troubleshoot your issue. These are a set of common issues that customers might have faced during the installation of the extension. If these don't solve your issue, please follow the last step on the [troubleshooting-document](https://community.appdynamics.com/t5/Knowledge-Base/How-to-troubleshoot-missing-custom-metrics-or-extensions-metrics/ta-p/28695) to contact the support team.
-
-## Support Tickets
-If after going through the [Troubleshooting Document](https://community.appdynamics.com/t5/Knowledge-Base/How-to-troubleshoot-missing-custom-metrics-or-extensions-metrics/ta-p/28695) you have not been able to get your extension working, please file a ticket and add the following information.
-
-Please provide the following in order for us to assist you better.
-
-1. Stop the running machine agent.
-2. Delete all existing logs under <MachineAgent>/logs.
-3. Please enable debug logging by editing the file <MachineAgent>/conf/logging/log4j.xml. Change the level value of the following <logger> elements to debug.
-   <logger name="com.singularity">
-   <logger name="com.appdynamics">
-4. Start the machine agent and please let it run for 10 mins. Then zip and upload all the logs in the directory <MachineAgent>/logs/*.
-5. Attach the zipped <MachineAgent>/conf/* directory here.
-6. Attach the zipped <MachineAgent>/monitors/ExtensionFolderYouAreHavingIssuesWith directory here.
-   For any support related questions, you can also contact help@appdynamics.com.
+Please follow the steps listed in this [troubleshooting-document](https://community.appdynamics.com/t5/Knowledge-Base/How-to-troubleshoot-missing-custom-metrics-or-extensions-metrics/ta-p/28695) in order to troubleshoot your issue. These are a set of common issues that customers might have faced during the installation of the extension.
 
 ## Contributing
 Always feel free to fork and contribute any changes directly here on [GitHub](https://github.com/Appdynamics/aws-dynamodb-monitoring-extension).
@@ -186,8 +169,7 @@ Always feel free to fork and contribute any changes directly here on [GitHub](ht
    |          Name            |  Version   |
    |--------------------------|------------|
    |Extension Version         |2.0.5      |
-   |Controller Compatibility  |4.5 or Later|
-   |Agent Compatibility| Machine Agent 4.5.13 or later |
-   |Last Update               |Jun 04, 2021 |
+   |Last Update               |04/06/2021 |
+   |Change List|[ChangeLog](https://github.com/Appdynamics/aws-dynamodb-monitoring-extension/blob/master/CHANGELOG.md)|
 
-List of changes to this extension can be found [here](https://github.com/Appdynamics/aws-dynamodb-monitoring-extension/blob/master/CHANGELOG.md)
+**Note**: While extensions are maintained and supported by customers under the open-source licensing model, they interact with agents and Controllers that are subject to [AppDynamics’ maintenance and support policy](https://docs.appdynamics.com/latest/en/product-and-release-announcements/maintenance-support-for-software-versions). Some extensions have been tested with AppDynamics 4.5.13+ artifacts, but you are strongly recommended against using versions that are no longer supported.
